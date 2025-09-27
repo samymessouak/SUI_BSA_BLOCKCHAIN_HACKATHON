@@ -39,7 +39,7 @@ class MapUIController(
         binding.btnRotateRight.setOnClickListener { onRotateRightClick() }
     }
 
-    fun updateLegend(progressData: Map<String, Pair<Int, Int>>) {
+    fun updateLegend(_progressData: Map<String, Pair<Int, Int>>) {
         // Show only total stickers available, not collected count
         binding.textLegendContent.text = "🍔 McDonald's (2 stickers)\n👟 Nike (3 stickers)\n💄 Sephora (4 stickers)"
     }

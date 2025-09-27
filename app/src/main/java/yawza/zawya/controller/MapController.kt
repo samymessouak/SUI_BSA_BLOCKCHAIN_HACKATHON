@@ -22,11 +22,9 @@ class MapController(
     
     fun setupMap(supportFragmentManager: androidx.fragment.app.FragmentManager) {
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map) as? SupportMapFragment
         
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this)
-        }
+        mapFragment?.getMapAsync(this)
     }
     
         override fun onMapReady(googleMap: GoogleMap) {
