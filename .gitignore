@@ -1,0 +1,10 @@
+# Rust / Cargo
+target/
+**/*.rs.bk
+
+# Sui local data
+.sui/
+.move/
+
+# VS Code
+.vscode/
