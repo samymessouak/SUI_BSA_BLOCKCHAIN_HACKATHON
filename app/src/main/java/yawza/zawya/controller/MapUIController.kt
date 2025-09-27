@@ -41,6 +41,6 @@ class MapUIController(
 
     fun updateLegend(progressData: Map<String, Pair<Int, Int>>) {
         // Show only total stickers available, not collected count
-        binding.textLegendContent.text = "🍔 McDonald's (5 stickers)\n👟 Nike (10 stickers)\n💄 Sephora (15 stickers)"
+        binding.textLegendContent.text = "🍔 McDonald's (2 stickers)\n👟 Nike (3 stickers)\n💄 Sephora (4 stickers)"
     }
 }

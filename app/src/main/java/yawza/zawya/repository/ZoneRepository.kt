@@ -5,16 +5,16 @@ import yawza.zawya.models.StickerZone
 
 class ZoneRepository {
     
-    // Lausanne zones data
+    // Lausanne zones data - 1 sticker per zone
     fun getLausanneZones(): List<StickerZone> {
         return listOf(
-            // McDonald's zones (5 stickers total in 2 zones)
+            // McDonald's zones (2 stickers total in 2 zones)
             StickerZone(
                 id = "mcdo_1",
                 center = LatLng(46.5197, 6.6323), // Ouchy area
                 radius = 150.0,
                 brandName = "McDonald's",
-                stickerCount = 3,
+                stickerCount = 1,
                 color = android.graphics.Color.RED
             ),
             StickerZone(
@@ -22,17 +22,17 @@ class ZoneRepository {
                 center = LatLng(46.5250, 6.6280), // Flon area
                 radius = 120.0,
                 brandName = "McDonald's",
-                stickerCount = 2,
+                stickerCount = 1,
                 color = android.graphics.Color.RED
             ),
             
-            // Nike zones (10 stickers total in 3 zones)
+            // Nike zones (3 stickers total in 3 zones)
             StickerZone(
                 id = "nike_1",
                 center = LatLng(46.5220, 6.6350), // Near cathedral
                 radius = 180.0,
                 brandName = "Nike",
-                stickerCount = 4,
+                stickerCount = 1,
                 color = android.graphics.Color.BLACK
             ),
             StickerZone(
@@ -40,7 +40,7 @@ class ZoneRepository {
                 center = LatLng(46.5180, 6.6250), // South of cathedral
                 radius = 160.0,
                 brandName = "Nike",
-                stickerCount = 3,
+                stickerCount = 1,
                 color = android.graphics.Color.BLACK
             ),
             StickerZone(
@@ -48,17 +48,17 @@ class ZoneRepository {
                 center = LatLng(46.5280, 6.6400), // North of cathedral
                 radius = 140.0,
                 brandName = "Nike",
-                stickerCount = 3,
+                stickerCount = 1,
                 color = android.graphics.Color.BLACK
             ),
             
-            // Sephora zones (15 stickers total in 4 zones)
+            // Sephora zones (4 stickers total in 4 zones)
             StickerZone(
                 id = "sephora_1",
                 center = LatLng(46.5200, 6.6300), // Cathedral area
                 radius = 200.0,
                 brandName = "Sephora",
-                stickerCount = 4,
+                stickerCount = 1,
                 color = android.graphics.Color.MAGENTA
             ),
             StickerZone(
@@ -66,7 +66,7 @@ class ZoneRepository {
                 center = LatLng(46.5150, 6.6200), // Ouchy area
                 radius = 170.0,
                 brandName = "Sephora",
-                stickerCount = 4,
+                stickerCount = 1,
                 color = android.graphics.Color.MAGENTA
             ),
             StickerZone(
@@ -74,7 +74,7 @@ class ZoneRepository {
                 center = LatLng(46.5250, 6.6450), // Flon area
                 radius = 160.0,
                 brandName = "Sephora",
-                stickerCount = 4,
+                stickerCount = 1,
                 color = android.graphics.Color.MAGENTA
             ),
             StickerZone(
@@ -82,7 +82,7 @@ class ZoneRepository {
                 center = LatLng(46.5300, 6.6350), // North area
                 radius = 150.0,
                 brandName = "Sephora",
-                stickerCount = 3,
+                stickerCount = 1,
                 color = android.graphics.Color.MAGENTA
             )
         )

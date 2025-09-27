@@ -28,21 +28,21 @@ class CollectionViewModel : ViewModel() {
                 brandName = "McDonald's",
                 brandIcon = "🍔",
                 collectedStickers = profileViewModel.getStickerCountForBrand("McDonald's"),
-                totalStickers = 5,
+                totalStickers = 2,
                 brandColor = android.graphics.Color.RED
             ),
             CollectionItem(
                 brandName = "Nike",
                 brandIcon = "👟",
                 collectedStickers = profileViewModel.getStickerCountForBrand("Nike"),
-                totalStickers = 10,
+                totalStickers = 3,
                 brandColor = android.graphics.Color.BLACK
             ),
             CollectionItem(
                 brandName = "Sephora",
                 brandIcon = "💄",
                 collectedStickers = profileViewModel.getStickerCountForBrand("Sephora"),
-                totalStickers = 15,
+                totalStickers = 4,
                 brandColor = android.graphics.Color.MAGENTA
             )
         )
@@ -68,21 +68,21 @@ class CollectionViewModel : ViewModel() {
                 brandName = "McDonald's",
                 brandIcon = "🍔",
                 collectedStickers = mcdonaldsCount,
-                totalStickers = 5,
+                totalStickers = 2,
                 brandColor = android.graphics.Color.RED
             ),
             CollectionItem(
                 brandName = "Nike",
                 brandIcon = "👟",
                 collectedStickers = nikeCount,
-                totalStickers = 10,
+                totalStickers = 3,
                 brandColor = android.graphics.Color.BLACK
             ),
             CollectionItem(
                 brandName = "Sephora",
                 brandIcon = "💄",
                 collectedStickers = sephoraCount,
-                totalStickers = 15,
+                totalStickers = 4,
                 brandColor = android.graphics.Color.MAGENTA
             )
         )
