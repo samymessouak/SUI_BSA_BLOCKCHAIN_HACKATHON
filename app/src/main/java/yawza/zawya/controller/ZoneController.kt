@@ -46,14 +46,83 @@ class ZoneController(
             val distance = locationManager.calculateDistance(userLocation, zone.center)
             
             if (distance <= 50) {
-                // TODO: Implement actual camera QR scanning
-                simulateStickerCollection(zone)
+                // Start QR code scanning
+                startQRCodeScanning(zone)
             } else {
                 navigationManager.showDistanceToast(distance.toInt())
             }
         } else {
             navigationManager.showLocationUnavailableToast()
         }
+    }
+    
+    @Suppress("DEPRECATION")
+    private fun startQRCodeScanning(_zone: StickerZone) {
+        val intent = android.content.Intent(context, yawza.zawya.activity.QRScannerActivity::class.java)
+        if (context is androidx.fragment.app.FragmentActivity) {
+            context.startActivityForResult(intent, QR_SCAN_REQUEST_CODE)
+        }
+    }
+    
+    fun handleQRScanResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
+        if (requestCode == QR_SCAN_REQUEST_CODE && resultCode == android.app.Activity.RESULT_OK) {
+            val stickerId = data?.getStringExtra("sticker_id")
+            val zoneId = data?.getStringExtra("zone_id")
+            val brandName = data?.getStringExtra("brand_name")
+            
+            if (stickerId != null && zoneId != null && brandName != null) {
+                processScannedSticker(stickerId, zoneId, brandName)
+            } else {
+                navigationManager.showErrorToast("Invalid QR code data")
+            }
+        }
+    }
+    
+    private fun processScannedSticker(stickerId: String, zoneId: String, brandName: String) {
+        // Check if user already has this sticker
+        if (profileViewModel.hasSticker(stickerId)) {
+            navigationManager.showAlreadyCollectedToast(
+                yawza.zawya.models.StickerZone(
+                    id = zoneId,
+                    center = com.google.android.gms.maps.model.LatLng(0.0, 0.0),
+                    radius = 0.0,
+                    brandName = brandName,
+                    stickerCount = 1,
+                    color = android.graphics.Color.GRAY
+                )
+            )
+            return
+        }
+        
+        // Collect sticker in map viewmodel
+        viewModel.collectSticker(zoneId, yawza.zawya.models.StickerZone(
+            id = zoneId,
+            center = com.google.android.gms.maps.model.LatLng(0.0, 0.0),
+            radius = 0.0,
+            brandName = brandName,
+            stickerCount = 1,
+            color = android.graphics.Color.GRAY
+        ))
+        
+        // Mint sticker on blockchain via ProfileViewModel
+        profileViewModel.collectSticker(zoneId, brandName, 1)
+        
+        navigationManager.showCollectionToast(
+            yawza.zawya.models.StickerZone(
+                id = zoneId,
+                center = com.google.android.gms.maps.model.LatLng(0.0, 0.0),
+                radius = 0.0,
+                brandName = brandName,
+                stickerCount = 1,
+                color = android.graphics.Color.GRAY
+            ),
+            1,
+            1
+        )
+    }
+    
+    companion object {
+        const val QR_SCAN_REQUEST_CODE = 1001
     }
     
     private fun simulateStickerCollection(zone: StickerZone) {

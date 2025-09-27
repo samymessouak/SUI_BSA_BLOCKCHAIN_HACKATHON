@@ -43,7 +43,7 @@ class NavigationManager(private val context: Context) {
         ).show()
     }
     
-    fun showCompletionToast(zone: StickerZone) {
+    fun showCompletionToast(_zone: StickerZone) {
         Toast.makeText(
             context,
             "All stickers collected from this zone!",
@@ -80,6 +80,14 @@ class NavigationManager(private val context: Context) {
             context,
             "You already have this ${zone.brandName} sticker!",
             Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    fun showErrorToast(message: String) {
+        Toast.makeText(
+            context,
+            "Error: $message",
+            Toast.LENGTH_LONG
         ).show()
     }
 }
