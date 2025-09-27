@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test QR Code for Yawza App</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+    <h1>🧪 Test QR Codes for Yawza App</h1>
+    
+    <div id="qr-codes">
+        <h2>McDonald's Test QR Codes:</h2>
+        <div id="mcdo-ouchy"></div>
+        <div id="mcdo-flon"></div>
+        
+        <h2>Nike Test QR Codes:</h2>
+        <div id="nike-cathedral"></div>
+        <div id="nike-south"></div>
+        <div id="nike-north"></div>
+        
+        <h2>Sephora Test QR Codes:</h2>
+        <div id="sephora-cathedral"></div>
+        <div id="sephora-ouchy"></div>
+        <div id="sephora-flon"></div>
+        <div id="sephora-north"></div>
+    </div>
+
+    <script>
+        // Test QR Code data
+        const testQRCodes = [
+            {
+                id: "mcdo-ouchy",
+                data: {
+                    "sticker_id": "test_mcdo_ouchy_001",
+                    "zone_id": "mcdo_1",
+                    "brand_name": "McDonald's",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "mcdo-flon",
+                data: {
+                    "sticker_id": "test_mcdo_flon_002",
+                    "zone_id": "mcdo_2",
+                    "brand_name": "McDonald's",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "nike-cathedral",
+                data: {
+                    "sticker_id": "test_nike_cathedral_001",
+                    "zone_id": "nike_1",
+                    "brand_name": "Nike",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "nike-south",
+                data: {
+                    "sticker_id": "test_nike_south_002",
+                    "zone_id": "nike_2",
+                    "brand_name": "Nike",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "nike-north",
+                data: {
+                    "sticker_id": "test_nike_north_003",
+                    "zone_id": "nike_3",
+                    "brand_name": "Nike",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "sephora-cathedral",
+                data: {
+                    "sticker_id": "test_sephora_cathedral_001",
+                    "zone_id": "sephora_1",
+                    "brand_name": "Sephora",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "sephora-ouchy",
+                data: {
+                    "sticker_id": "test_sephora_ouchy_002",
+                    "zone_id": "sephora_2",
+                    "brand_name": "Sephora",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "sephora-flon",
+                data: {
+                    "sticker_id": "test_sephora_flon_003",
+                    "zone_id": "sephora_3",
+                    "brand_name": "Sephora",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            },
+            {
+                id: "sephora-north",
+                data: {
+                    "sticker_id": "test_sephora_north_004",
+                    "zone_id": "sephora_4",
+                    "brand_name": "Sephora",
+                    "timestamp": Date.now(),
+                    "version": "1.0",
+                    "test": true
+                }
+            }
+        ];
+
+        // Generate QR codes
+        testQRCodes.forEach(qr => {
+            const qrData = JSON.stringify(qr.data);
+            QRCode.toCanvas(document.getElementById(qr.id), qrData, {
+                width: 200,
+                height: 200,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            }, function (error) {
+                if (error) console.error(error);
+                console.log('QR Code generated for ' + qr.id);
+            });
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        #qr-codes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        #qr-codes > div {
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #666;
+            font-size: 18px;
+        }
+    </style>
+</body>
+</html>
