@@ -3,9 +3,13 @@ package yawza.zawya.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import yawza.zawya.models.CollectionItem
 
 class CollectionViewModel : ViewModel() {
+    
+    private val profileViewModel = ProfileViewModel()
     
     private val _collections = MutableLiveData<List<CollectionItem>>()
     val collections: LiveData<List<CollectionItem>> = _collections
@@ -15,6 +19,7 @@ class CollectionViewModel : ViewModel() {
     
     init {
         loadCollections()
+        observeProfileChanges()
     }
     
     private fun loadCollections() {
@@ -22,21 +27,21 @@ class CollectionViewModel : ViewModel() {
             CollectionItem(
                 brandName = "McDonald's",
                 brandIcon = "🍔",
-                collectedStickers = 0,
+                collectedStickers = profileViewModel.getStickerCountForBrand("McDonald's"),
                 totalStickers = 5,
                 brandColor = android.graphics.Color.RED
             ),
             CollectionItem(
                 brandName = "Nike",
                 brandIcon = "👟",
-                collectedStickers = 0,
+                collectedStickers = profileViewModel.getStickerCountForBrand("Nike"),
                 totalStickers = 10,
                 brandColor = android.graphics.Color.BLACK
             ),
             CollectionItem(
                 brandName = "Sephora",
                 brandIcon = "💄",
-                collectedStickers = 0,
+                collectedStickers = profileViewModel.getStickerCountForBrand("Sephora"),
                 totalStickers = 15,
                 brandColor = android.graphics.Color.MAGENTA
             )
@@ -44,6 +49,12 @@ class CollectionViewModel : ViewModel() {
         
         _collections.value = collections
         _totalStickers.value = collections.sumOf { it.collectedStickers }
+    }
+    
+    private fun observeProfileChanges() {
+        profileViewModel.ownedStickers.observeForever { stickers ->
+            loadCollections() // Reload when stickers change
+        }
     }
     
     fun updateCollection(brandName: String, newCount: Int) {

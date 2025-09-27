@@ -16,7 +16,7 @@ class CollectionAdapter(
 ) : RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder>() {
 
     class CollectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val brandIcon: ImageView = itemView.findViewById(R.id.image_brand_icon)
+        val brandIcon: TextView = itemView.findViewById(R.id.text_brand_icon)
         val brandName: TextView = itemView.findViewById(R.id.text_brand_name)
         val progress: TextView = itemView.findViewById(R.id.text_progress)
         val progressBar: ProgressBar = itemView.findViewById(R.id.progress_bar)
@@ -32,11 +32,11 @@ class CollectionAdapter(
     override fun onBindViewHolder(holder: CollectionViewHolder, position: Int) {
         val collection = collections[position]
         
-        // Set brand icon (using emoji for now)
-        holder.brandIcon.setImageResource(android.R.drawable.ic_menu_gallery) // Placeholder
+        // Set brand icon (using emoji)
+        holder.brandIcon.text = collection.brandIcon
         
         // Set brand name
-        holder.brandName.text = "${collection.brandIcon} ${collection.brandName}"
+        holder.brandName.text = collection.brandName
         
         // Set progress text
         holder.progress.text = "${collection.collectedStickers}/${collection.totalStickers} stickers"
