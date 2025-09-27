@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Yawza</string>
+    <string name="legend_content">🍔 McDonald\'s (%1$d/%2$d)\n👟 Nike (%3$d/%4$d)\n💄 Sephora (%5$d/%6$d)</string>
+    <string name="zone_info_title">Sticker Zone</string>
+    <string name="scan_stickers">Scan for Stickers</string>
+    <string name="navigate_to_zone">Navigate to Zone</string>
+    <string name="close">Close</string>
+    <string name="location_permission_required">Location permission is required to show your position on the map</string>
+    <string name="camera_permission_required">Camera permission is required to scan stickers</string>
+</resources>
