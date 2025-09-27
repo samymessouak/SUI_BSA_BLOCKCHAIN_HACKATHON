@@ -9,7 +9,7 @@ import yawza.zawya.models.CollectionItem
 
 class CollectionViewModel : ViewModel() {
     
-    private val profileViewModel = ProfileViewModel()
+    private val profileViewModel = ProfileViewModel.getInstance()
     
     private val _collections = MutableLiveData<List<CollectionItem>>()
     val collections: LiveData<List<CollectionItem>> = _collections
@@ -52,9 +52,45 @@ class CollectionViewModel : ViewModel() {
     }
     
     private fun observeProfileChanges() {
-        profileViewModel.ownedStickers.observeForever { stickers ->
-            loadCollections() // Reload when stickers change
-        }
+        // Use a direct approach - update collections whenever we need to
+        // This will be called from the Fragment when needed
+    }
+    
+    private fun updateCollectionsFromProfile() {
+        val mcdonaldsCount = profileViewModel.getStickerCountForBrand("McDonald's")
+        val nikeCount = profileViewModel.getStickerCountForBrand("Nike")
+        val sephoraCount = profileViewModel.getStickerCountForBrand("Sephora")
+        
+        android.util.Log.d("CollectionViewModel", "Updating collections: McDonald's=$mcdonaldsCount, Nike=$nikeCount, Sephora=$sephoraCount")
+        
+        val collections = listOf(
+            CollectionItem(
+                brandName = "McDonald's",
+                brandIcon = "🍔",
+                collectedStickers = mcdonaldsCount,
+                totalStickers = 5,
+                brandColor = android.graphics.Color.RED
+            ),
+            CollectionItem(
+                brandName = "Nike",
+                brandIcon = "👟",
+                collectedStickers = nikeCount,
+                totalStickers = 10,
+                brandColor = android.graphics.Color.BLACK
+            ),
+            CollectionItem(
+                brandName = "Sephora",
+                brandIcon = "💄",
+                collectedStickers = sephoraCount,
+                totalStickers = 15,
+                brandColor = android.graphics.Color.MAGENTA
+            )
+        )
+        
+        _collections.value = collections
+        _totalStickers.value = collections.sumOf { it.collectedStickers }
+        
+        android.util.Log.d("CollectionViewModel", "Collections updated: ${collections.map { "${it.brandName}=${it.collectedStickers}" }}")
     }
     
     fun updateCollection(brandName: String, newCount: Int) {
@@ -77,5 +113,9 @@ class CollectionViewModel : ViewModel() {
         } else {
             0
         }
+    }
+    
+    fun refreshCollections() {
+        updateCollectionsFromProfile()
     }
 }
