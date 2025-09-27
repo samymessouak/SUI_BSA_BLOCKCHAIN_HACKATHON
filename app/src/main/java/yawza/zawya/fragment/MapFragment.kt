@@ -131,4 +131,10 @@ class MapFragment : Fragment() {
     private fun requestLocationPermissions() {
         locationController.requestLocationPermissions()
     }
+
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        zoneController.handleQRScanResult(requestCode, resultCode, data)
+    }
 }

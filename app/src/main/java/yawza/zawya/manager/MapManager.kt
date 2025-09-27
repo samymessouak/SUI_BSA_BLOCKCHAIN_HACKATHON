@@ -29,6 +29,7 @@ class MapManager(private val context: Context) {
         googleMap.uiSettings.isTiltGesturesEnabled = true // Enable tilt for better 3D view
         
         // Set up camera change listener to enforce zoom restrictions
+        @Suppress("DEPRECATION")
         googleMap.setOnCameraChangeListener { cameraPosition ->
             val zoom = cameraPosition.zoom
             if (zoom < 16f || zoom > 20f) {
