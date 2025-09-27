@@ -40,10 +40,16 @@ class BlockchainService {
                     )
                 )
                 
-                onSuccess(mockToken)
+                // Post to main thread using Handler
+                android.os.Handler(android.os.Looper.getMainLooper()).post {
+                    onSuccess(mockToken)
+                }
                 
             } catch (e: Exception) {
-                onError("Failed to mint sticker: ${e.message}")
+                // Post error to main thread
+                android.os.Handler(android.os.Looper.getMainLooper()).post {
+                    onError("Failed to mint sticker: ${e.message}")
+                }
             }
         }.start()
     }

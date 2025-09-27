@@ -8,6 +8,17 @@ import yawza.zawya.service.BlockchainService
 
 class ProfileViewModel : ViewModel() {
     
+    companion object {
+        @Volatile
+        private var INSTANCE: ProfileViewModel? = null
+        
+        fun getInstance(): ProfileViewModel {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ProfileViewModel().also { INSTANCE = it }
+            }
+        }
+    }
+    
     private val blockchainService = BlockchainService()
     
     private val _ownedStickers = MutableLiveData<List<StickerToken>>()
@@ -64,7 +75,9 @@ class ProfileViewModel : ViewModel() {
     }
     
     fun getStickerCountForBrand(brandName: String): Int {
-        return _ownedStickers.value?.count { it.brandName == brandName } ?: 0
+        val count = _ownedStickers.value?.count { it.brandName == brandName } ?: 0
+        android.util.Log.d("ProfileViewModel", "getStickerCountForBrand($brandName): $count")
+        return count
     }
     
     fun hasSticker(zoneId: String): Boolean {
