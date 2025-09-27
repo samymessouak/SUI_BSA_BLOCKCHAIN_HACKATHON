@@ -16,11 +16,13 @@ import yawza.zawya.manager.MapManager
 import yawza.zawya.manager.NavigationManager
 import yawza.zawya.repository.ZoneRepository
 import yawza.zawya.viewmodel.MapViewModel
+import yawza.zawya.viewmodel.ProfileViewModel
 
 class MapFragment : Fragment() {
     
     private lateinit var binding: FragmentMapBinding
     private lateinit var viewModel: MapViewModel
+    private lateinit var profileViewModel: ProfileViewModel
     
     // Controllers
     private lateinit var uiController: MapUIController
@@ -53,8 +55,9 @@ class MapFragment : Fragment() {
     }
     
     private fun initializeComponents() {
-        // Initialize ViewModel
+        // Initialize ViewModels
         viewModel = ViewModelProvider(this)[MapViewModel::class.java]
+        profileViewModel = ProfileViewModel.getInstance()
         
         // Initialize managers
         mapManager = MapManager(requireContext())
@@ -68,7 +71,7 @@ class MapFragment : Fragment() {
         mapController = MapController(requireContext(), viewModel, mapManager, zoneRepository) { latLng ->
             handleMapClick(latLng)
         }
-        zoneController = ZoneController(requireContext(), viewModel, mapManager, locationManager, navigationManager, zoneRepository)
+        zoneController = ZoneController(requireContext(), viewModel, mapManager, locationManager, navigationManager, zoneRepository, profileViewModel)
         
         // Observe ViewModel changes
         observeViewModel()
@@ -83,9 +86,7 @@ class MapFragment : Fragment() {
             }
         }
         
-        viewModel.collectedStickers.observe(viewLifecycleOwner) {
-            updateLegend()
-        }
+        // Removed progress tracking from map screen
     }
     
     private fun setupUI() {
@@ -123,8 +124,8 @@ class MapFragment : Fragment() {
     }
     
     private fun updateLegend() {
-        val progressData = zoneController.getProgressData()
-        uiController.updateLegend(progressData)
+        // Show static legend with total stickers available
+        uiController.updateLegend(emptyMap())
     }
     
     private fun requestLocationPermissions() {

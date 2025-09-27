@@ -40,15 +40,7 @@ class MapUIController(
     }
 
     fun updateLegend(progressData: Map<String, Pair<Int, Int>>) {
-        val mcdonaldsProgress = progressData["McDonald's"] ?: Pair(0, 5)
-        val nikeProgress = progressData["Nike"] ?: Pair(0, 10)
-        val sephoraProgress = progressData["Sephora"] ?: Pair(0, 15)
-
-        binding.textLegendContent.text = context.getString(
-            R.string.legend_content,
-            mcdonaldsProgress.first, mcdonaldsProgress.second,
-            nikeProgress.first, nikeProgress.second,
-            sephoraProgress.first, sephoraProgress.second
-        )
+        // Show only total stickers available, not collected count
+        binding.textLegendContent.text = "🍔 McDonald's (5 stickers)\n👟 Nike (10 stickers)\n💄 Sephora (15 stickers)"
     }
 }

@@ -74,4 +74,12 @@ class NavigationManager(private val context: Context) {
             Toast.LENGTH_SHORT
         ).show()
     }
+    
+    fun showAlreadyCollectedToast(zone: StickerZone) {
+        Toast.makeText(
+            context,
+            "You already have this ${zone.brandName} sticker!",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 }

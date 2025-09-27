@@ -9,6 +9,7 @@ import yawza.zawya.models.StickerZone
 import yawza.zawya.repository.ZoneRepository
 import yawza.zawya.utils.ZoneInfoDialog
 import yawza.zawya.viewmodel.MapViewModel
+import yawza.zawya.viewmodel.ProfileViewModel
 
 class ZoneController(
     private val context: Context,
@@ -16,7 +17,8 @@ class ZoneController(
     private val mapManager: MapManager,
     private val locationManager: LocationManager,
     private val navigationManager: NavigationManager,
-    private val zoneRepository: ZoneRepository
+    private val zoneRepository: ZoneRepository,
+    private val profileViewModel: ProfileViewModel
 ) {
     
     private val lausanneZones by lazy { zoneRepository.getLausanneZones() }
@@ -55,9 +57,21 @@ class ZoneController(
     }
     
     private fun simulateStickerCollection(zone: StickerZone) {
+        // Check if user already has this sticker
+        if (profileViewModel.hasSticker(zone.id)) {
+            navigationManager.showAlreadyCollectedToast(zone)
+            return
+        }
+        
+        // Check if zone has remaining stickers
         val remainingStickers = viewModel.getRemainingStickers(zone)
         if (remainingStickers > 0) {
+            // Collect sticker in map viewmodel
             viewModel.collectSticker(zone.id, zone)
+            
+            // Mint sticker on blockchain via ProfileViewModel
+            profileViewModel.collectSticker(zone.id, zone.brandName, zone.stickerCount)
+            
             val collected = viewModel.collectedStickers.value?.get(zone.id) ?: 0
             navigationManager.showCollectionToast(zone, collected, zone.stickerCount)
         } else {

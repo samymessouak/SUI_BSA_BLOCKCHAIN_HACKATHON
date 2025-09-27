@@ -34,6 +34,12 @@ class CollectionFragment : Fragment() {
         observeViewModel()
     }
     
+    override fun onResume() {
+        super.onResume()
+        // Refresh collections when fragment becomes visible
+        viewModel.refreshCollections()
+    }
+    
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[CollectionViewModel::class.java]
     }
