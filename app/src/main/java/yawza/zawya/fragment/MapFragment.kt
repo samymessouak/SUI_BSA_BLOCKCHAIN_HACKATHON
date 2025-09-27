@@ -111,7 +111,7 @@ class MapFragment : Fragment() {
     
     private fun setupMap() {
         mapController.setupMap(childFragmentManager)
-        // Get current location after map is set up
+        // Get current location immediately to avoid 0,0 position
         locationController.getCurrentLocation()
     }
     
