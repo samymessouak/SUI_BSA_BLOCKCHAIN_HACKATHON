@@ -66,7 +66,7 @@ class ProfileViewModel : ViewModel() {
                 _ownedStickers.value = currentStickers + stickerToken
                 _isLoading.value = false
             },
-            onError = { error ->
+            onError = { _error ->
                 // Handle error
                 _isLoading.value = false
                 // You could show a toast or error dialog here

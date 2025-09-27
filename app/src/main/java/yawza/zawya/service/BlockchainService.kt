@@ -55,9 +55,9 @@ class BlockchainService {
     }
     
     fun getOwnedStickers(
-        walletAddress: String,
+        _walletAddress: String,
         onSuccess: (List<StickerToken>) -> Unit,
-        onError: (String) -> Unit
+        _onError: (String) -> Unit
     ) {
         // TODO: Replace with actual KSUI blockchain call
         // val client = KsuiClient("https://fullnode.testnet.sui.io:443")
@@ -68,9 +68,9 @@ class BlockchainService {
     }
     
     fun transferSticker(
-        stickerId: String,
-        toAddress: String,
-        onSuccess: () -> Unit,
+        _stickerId: String,
+        _toAddress: String,
+        _onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
         // TODO: Implement sticker transfer
