@@ -8,3 +8,34 @@ target/
 
 # VS Code
 .vscode/
+
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# API Keys and Secrets
+app/src/main/res/values/api_keys.xml
+app/google-services.json
+**/google-services.json
+**/api_keys.xml
+**/secrets.xml
+**/local.properties
+
+# Build outputs
+app/build/
+build/
+*.apk
+*.aab
