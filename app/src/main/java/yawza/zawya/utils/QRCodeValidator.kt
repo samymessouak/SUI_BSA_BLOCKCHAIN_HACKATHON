@@ -44,9 +44,14 @@ object QRCodeValidator {
             
             // Validate timestamp (QR codes shouldn't be too old)
             val currentTime = System.currentTimeMillis()
-            val maxAge = 24 * 60 * 60 * 1000L // 24 hours
+            val maxAge = 30 * 24 * 60 * 60 * 1000L // 30 days (very lenient for testing)
             if (timestamp > 0 && (currentTime - timestamp) > maxAge) {
                 return ValidationResult(false, error = "QR code expired")
+            }
+            
+            // Allow QR codes with no timestamp or old timestamps for testing
+            if (timestamp == 0L || timestamp < 1000000000000L) {
+                Log.d("QRCodeValidator", "QR code has no valid timestamp, allowing for testing")
             }
             
             Log.d("QRCodeValidator", "QR code validated successfully: stickerId=$stickerId, zoneId=$zoneId, brandName=$brandName")

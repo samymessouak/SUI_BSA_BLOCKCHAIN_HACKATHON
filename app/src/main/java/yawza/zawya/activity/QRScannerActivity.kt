@@ -24,7 +24,6 @@ class QRScannerActivity : AppCompatActivity(), PermissionListener {
     private lateinit var binding: ActivityQrScannerBinding
     private lateinit var barcodeView: DecoratedBarcodeView
     private var isScanning = false
-    private var isFlashOn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +38,6 @@ class QRScannerActivity : AppCompatActivity(), PermissionListener {
     private fun setupScanner() {
         barcodeView = binding.barcodeScanner
         barcodeView.decodeContinuous(callback)
-        
-        // Enable camera movement and zoom
-        barcodeView.barcodeView.cameraSettings.isAutoFocusEnabled = true
-        barcodeView.barcodeView.cameraSettings.isMeteringEnabled = true
-        barcodeView.barcodeView.cameraSettings.isBarcodeSceneModeEnabled = true
     }
 
     private fun setupUI() {
@@ -51,11 +45,6 @@ class QRScannerActivity : AppCompatActivity(), PermissionListener {
         binding.fabBack.setOnClickListener {
             setResult(RESULT_CANCELED)
             finish()
-        }
-
-        // Flash toggle button
-        binding.fabFlash.setOnClickListener {
-            toggleFlash()
         }
     }
 
@@ -137,22 +126,6 @@ class QRScannerActivity : AppCompatActivity(), PermissionListener {
     override fun onPause() {
         super.onPause()
         barcodeView.pause()
-    }
-
-    private fun toggleFlash() {
-        try {
-            if (isFlashOn) {
-                barcodeView.setTorchOff()
-                isFlashOn = false
-                binding.fabFlash.setImageResource(android.R.drawable.ic_menu_myplaces)
-            } else {
-                barcodeView.setTorchOn()
-                isFlashOn = true
-                binding.fabFlash.setImageResource(android.R.drawable.ic_menu_myplaces)
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, "Flash not available", Toast.LENGTH_SHORT).show()
-        }
     }
 
     @Deprecated("Deprecated in Java")
