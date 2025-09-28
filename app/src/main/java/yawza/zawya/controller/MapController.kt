@@ -31,10 +31,8 @@ class MapController(
             mapManager.initializeMap(googleMap)
             mapManager.setMapClickListener { latLng -> onMapClick(latLng) }
 
-            // Immediately set initial location and show zones
-            val hardcodedLocation = LatLng(46.5250, 6.6280) // Flon McDonald's
-            mapManager.updateUserLocationMarker(hardcodedLocation)
-            mapManager.updateZoneOverlays(lausanneZones, hardcodedLocation)
+            // Wait for actual user location instead of hardcoded
+            // The location will be set by MainActivity when GPS location is available
         }
     
     fun handleZoomIn() {
