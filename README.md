@@ -35,6 +35,7 @@ All sticker ownership and trades are stored **on-chain**, using the **Sui blockc
 ### Blockchain
 - **Platform**: Sui blockchain
 - **Language**: Move smart contracts
+- **SDK**: KSUI (Kotlin SDK for Sui)
 - **Token Standard**: SFTs (Semi-Fungible Tokens)
 
 ### Backend/Storage
@@ -52,14 +53,13 @@ All sticker ownership and trades are stored **on-chain**, using the **Sui blockc
 - **Zone Interaction**: Tap zones to view detailed information
 
 ### 🎯 Zone System
-- **Visual Indicators**: 
-  - 🔴 High density zones (15+ stickers)
-  - 🟡 Medium density zones (6-15 stickers)  
-  - 🟢 Low density zones (1-5 stickers)
+- **Visual Indicators**: Colored circles showing sticker locations
+- **Dynamic Circle Behavior**: When you enter a zone, the circle gets smaller and more precise to guide you to the exact sticker location
 - **Brand Information**: Display sponsor name and available stickers
 - **Action Buttons**: 
   - "Scan Here" - Opens camera for sticker scanning
   - "Navigate" - Centers map on zone location
+- **Navigation**: Users must physically walk to zones to scan stickers
 
 ### 📍 Location Services
 - **Permission Handling**: Automatic location permission requests
@@ -134,15 +134,109 @@ SUI_BSA_BLOCKCHAIN_HACKATHON/
 
 ---
 
-## 🎮 Usage Guide
+## 🔗 Blockchain Integration
 
-### For Users
-1. **Open the App**: Launch Yawza on your Android device
-2. **Grant Permissions**: Allow location access for GPS tracking
-3. **Explore the Map**: Zoom in/out to see different areas
-4. **Find Zones**: Look for colored circles on the map
-5. **Tap Zones**: Get information about available stickers
-6. **Scan Stickers**: Use the "Scan Here" button to collect stickers
+### QR Code Scanning & Blockchain Updates
+When you scan a QR code for the **first time**, the sticker is automatically added to your **blockchain inventory**. This creates a permanent, verifiable record on the Sui blockchain.
+
+### How to Verify Blockchain Updates
+After scanning a QR code, you can verify that the blockchain has been updated:
+
+1. **Check Your Objects**: Use the Sui CLI to see all objects owned by your address:
+   ```bash
+   sui client objects <YOUR_ADDRESS>
+   ```
+
+2. **Inspect Individual Objects**: Check each object ID on [Suiscan](https://suiscan.xyz/) to see the detailed metadata and ownership information.
+
+### Blockchain Workflow
+1. **First Scan**: QR code → Sticker added to blockchain inventory
+2. **Verification**: Check `sui client objects` to see new inventory objects
+3. **Trading**: Transfer stickers between users using blockchain transactions
+4. **Ownership**: All sticker ownership is permanently recorded on-chain
+
+---
+
+## 🎮 Complete User Workflow
+
+### 1. **Authentication & Setup**
+- Launch the app and sign in/sign up
+- Create your blockchain inventory (one-time setup)
+- Grant location and camera permissions
+
+### 2. **Map Exploration**
+- Navigate around the interactive map of Lausanne
+- Look for colored zones indicating sticker locations
+- Tap on zones to see brand information and available stickers
+
+### 3. **QR Code Scanning**
+- When near a sticker zone, tap the purple scan button
+- Point your camera at the QR code
+- **First scan**: Sticker is automatically added to your blockchain inventory
+- **Subsequent scans**: No duplicate stickers (blockchain prevents this)
+
+### 4. **Collection Management**
+- View your collected stickers in the "Collection" tab
+- See progress for each brand (McDonald's, Nike, Sephora)
+- Track completion percentages and remaining stickers
+
+### 5. **Trading & Transactions**
+- Use the "Transaction" tab to transfer stickers to friends
+- Enter friend's wallet address
+- Select owned stickers to send
+- All transfers are recorded on the blockchain
+
+### 6. **Blockchain Verification**
+- Verify your inventory: `sui client objects <YOUR_ADDRESS>`
+- Check individual stickers on [Suiscan](https://suiscan.xyz/)
+- All ownership is permanently recorded on-chain
+
+---
+
+## 📱 App Screens & Workflow
+
+### **Map Screen** 🗺️
+- Interactive map of Lausanne with colored zones
+- Purple hexagonal scan button (center-bottom)
+- Zone indicators showing sticker locations
+- Real-time GPS tracking
+
+### **Collection Screen** 📚
+- View all your collected stickers by brand
+- Progress tracking (e.g., "1/2 McDonald's stickers")
+- Completion percentages
+- Detailed sticker views with lock/unlock status
+
+### **Transaction Screen** 💱
+- Transfer stickers to friends
+- Enter friend's wallet address
+- Select owned stickers to send
+- Visual distinction: owned (dark purple) vs unowned (light purple with lock)
+
+### **QR Scanner** 📷
+- Camera-based QR code scanning
+- Automatic blockchain inventory updates
+- Duplicate prevention (first scan only)
+
+---
+
+## 📸 Workflow Screenshots
+
+The app workflow is demonstrated through these key screens:
+
+### **Map Screen** 🗺️
+*Interactive map of Lausanne showing colored zones and the purple hexagonal scan button*
+
+### **Collection Screen** 📚
+*"My Sticker Collection" showing brand progress (McDonald's 1/2, Nike 1/3, Sephora 0/4)*
+
+### **Collection Detail Modal** 🔍
+*McDonald's Collection modal showing individual stickers with lock/unlock status*
+
+### **Transaction Screen** 💱
+*Sticker transfer interface with friend's wallet ID input and 3x3 sticker grid*
+
+---
 
 ### For Developers
 1. **Map Integration**: The app uses Google Maps SDK for interactive maps
@@ -163,10 +257,11 @@ SUI_BSA_BLOCKCHAIN_HACKATHON/
 ```
 
 ### Sample Zone Data
-The app includes sample zones in New York City:
-- **Nike Zone**: Times Square area (15 stickers)
-- **Starbucks Zone**: Central Park area (8 stickers)  
-- **Apple Zone**: Financial District (22 stickers)
+The app includes sample zones in Lausanne:
+- **Lausanne Flon Zone**: 
+  - **Sephora**: 4 stickers
+  - **Nike**: 3 stickers  
+  - **McDonald's**: 2 stickers
 
 ---
 
