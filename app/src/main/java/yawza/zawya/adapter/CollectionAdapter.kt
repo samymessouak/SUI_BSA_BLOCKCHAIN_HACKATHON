@@ -12,7 +12,8 @@ import yawza.zawya.R
 import yawza.zawya.models.CollectionItem
 
 class CollectionAdapter(
-    private val collections: List<CollectionItem>
+    private val collections: List<CollectionItem>,
+    private val onItemClick: (CollectionItem) -> Unit
 ) : RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder>() {
 
     class CollectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -53,6 +54,11 @@ class CollectionAdapter(
         
         // Change progress bar color based on brand
         holder.progressBar.progressTintList = android.content.res.ColorStateList.valueOf(collection.brandColor)
+        
+        // Set click listener
+        holder.itemView.setOnClickListener {
+            onItemClick(collection)
+        }
     }
 
     override fun getItemCount(): Int = collections.size
