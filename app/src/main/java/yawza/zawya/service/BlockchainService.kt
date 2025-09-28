@@ -27,7 +27,7 @@ class BlockchainService {
                 
                 // For now, create a mock token
                 val mockToken = StickerToken(
-                    id = UUID.randomUUID().toString(),
+                    id = zoneId, // Use the zoneId as the sticker ID
                     zoneId = zoneId,
                     brandName = brandName,
                     tokenId = "mock_token_${System.currentTimeMillis()}",
@@ -36,7 +36,8 @@ class BlockchainService {
                     metadata = mapOf(
                         "zoneId" to zoneId,
                         "brandName" to brandName,
-                        "mintedAt" to Date().toString()
+                        "mintedAt" to Date().toString(),
+                        "owner" to "user_address" // Mark as owned
                     )
                 )
                 

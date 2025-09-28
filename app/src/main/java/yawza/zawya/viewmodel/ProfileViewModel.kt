@@ -52,21 +52,24 @@ class ProfileViewModel : ViewModel() {
         _isLoading.value = false
     }
     
-    fun collectSticker(zoneId: String, brandName: String, stickerCount: Int) {
+    fun collectSticker(stickerId: String, brandName: String, stickerCount: Int) {
+        android.util.Log.d("ProfileViewModel", "Collecting sticker: $stickerId, brand: $brandName")
         _isLoading.value = true
         
         // Call blockchain service to mint sticker
         blockchainService.mintSticker(
-            zoneId = zoneId,
+            zoneId = stickerId, // Use stickerId as the identifier
             brandName = brandName,
             stickerCount = stickerCount,
             onSuccess = { stickerToken ->
+                android.util.Log.d("ProfileViewModel", "Sticker minted successfully: ${stickerToken.id}")
                 // Add to owned stickers
                 val currentStickers = _ownedStickers.value ?: emptyList()
                 _ownedStickers.value = currentStickers + stickerToken
                 _isLoading.value = false
             },
-            onError = { _error ->
+            onError = { error ->
+                android.util.Log.e("ProfileViewModel", "Error minting sticker: $error")
                 // Handle error
                 _isLoading.value = false
                 // You could show a toast or error dialog here
@@ -87,5 +90,9 @@ class ProfileViewModel : ViewModel() {
     fun getBrandProgress(brandName: String, totalStickers: Int): Pair<Int, Int> {
         val collected = getStickerCountForBrand(brandName)
         return Pair(collected, totalStickers)
+    }
+    
+    fun getOwnedStickers(): List<StickerToken> {
+        return _ownedStickers.value ?: emptyList()
     }
 }
