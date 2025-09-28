@@ -12,6 +12,29 @@
         android:layout_height="match_parent"
         tools:ignore="MissingClass" />
 
+    <!-- Persistent Scan Button - Center Bottom -->
+    <Button
+        android:id="@+id/btn_scan_persistent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/button_scan_rounded"
+        android:text="📱\nSCAN"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:elevation="6dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:alpha="0.5"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <!-- Brand Navigation Buttons -->
     <LinearLayout
         android:id="@+id/brand_buttons_container"
