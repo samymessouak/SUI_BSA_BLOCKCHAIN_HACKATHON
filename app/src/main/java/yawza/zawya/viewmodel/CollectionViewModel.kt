@@ -8,20 +8,20 @@ import kotlinx.coroutines.launch
 import yawza.zawya.models.CollectionItem
 
 class CollectionViewModel : ViewModel() {
-    
+
     private val profileViewModel = ProfileViewModel.getInstance()
-    
+
     private val _collections = MutableLiveData<List<CollectionItem>>()
     val collections: LiveData<List<CollectionItem>> = _collections
-    
+
     private val _totalStickers = MutableLiveData<Int>()
     val totalStickers: LiveData<Int> = _totalStickers
-    
+
     init {
         loadCollections()
         observeProfileChanges()
     }
-    
+
     private fun loadCollections() {
         val collections = listOf(
             CollectionItem(
@@ -46,29 +46,29 @@ class CollectionViewModel : ViewModel() {
                 brandColor = android.graphics.Color.MAGENTA
             )
         )
-        
+
         _collections.value = collections
         _totalStickers.value = collections.sumOf { it.collectedStickers }
     }
-    
+
     private fun observeProfileChanges() {
         // Observe ProfileViewModel changes
         profileViewModel.ownedStickers.observeForever { _ ->
             updateCollectionsFromProfile()
         }
     }
-    
+
     fun refreshCollections() {
         updateCollectionsFromProfile()
     }
-    
+
     private fun updateCollectionsFromProfile() {
         val mcdonaldsCount = profileViewModel.getStickerCountForBrand("McDonald's")
         val nikeCount = profileViewModel.getStickerCountForBrand("Nike")
         val sephoraCount = profileViewModel.getStickerCountForBrand("Sephora")
-        
+
         android.util.Log.d("CollectionViewModel", "Updating collections: McDonald's=$mcdonaldsCount, Nike=$nikeCount, Sephora=$sephoraCount")
-        
+
         val collections = listOf(
             CollectionItem(
                 brandName = "McDonald's",
@@ -92,13 +92,13 @@ class CollectionViewModel : ViewModel() {
                 brandColor = android.graphics.Color.MAGENTA
             )
         )
-        
+
         _collections.value = collections
         _totalStickers.value = collections.sumOf { it.collectedStickers }
-        
+
         android.util.Log.d("CollectionViewModel", "Collections updated: ${collections.map { "${it.brandName}=${it.collectedStickers}" }}")
     }
-    
+
     fun updateCollection(brandName: String, newCount: Int) {
         val currentCollections = _collections.value ?: return
         val updatedCollections = currentCollections.map { collection ->
@@ -108,11 +108,11 @@ class CollectionViewModel : ViewModel() {
                 collection
             }
         }
-        
+
         _collections.value = updatedCollections
         _totalStickers.value = updatedCollections.sumOf { it.collectedStickers }
     }
-    
+
     fun getProgressPercentage(collection: CollectionItem): Int {
         return if (collection.totalStickers > 0) {
             ((collection.collectedStickers.toFloat() / collection.totalStickers.toFloat()) * 100).toInt()
