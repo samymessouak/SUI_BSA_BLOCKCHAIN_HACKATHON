@@ -9,4 +9,9 @@
         android:id="@+id/nav_collection"
         android:icon="@drawable/ic_collection"
         android:title="Collection" />
+    
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_brand_default"
+        android:title="Profile" />
 </menu>

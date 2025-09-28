@@ -69,85 +69,15 @@ class ZoneController(
             val stickerId = data?.getStringExtra("sticker_id")
             val zoneId = data?.getStringExtra("zone_id")
             val brandName = data?.getStringExtra("brand_name")
-            
-            if (stickerId != null && zoneId != null && brandName != null) {
-                processScannedSticker(stickerId, zoneId, brandName)
-            } else {
-                navigationManager.showErrorToast("Invalid QR code data")
-            }
+
         }
     }
-    
-    private fun processScannedSticker(stickerId: String, zoneId: String, brandName: String) {
-        // Check if user already has this sticker
-        if (profileViewModel.hasSticker(stickerId)) {
-            navigationManager.showAlreadyCollectedToast(
-                yawza.zawya.models.StickerZone(
-                    id = zoneId,
-                    center = com.google.android.gms.maps.model.LatLng(0.0, 0.0),
-                    radius = 0.0,
-                    brandName = brandName,
-                    stickerCount = 1,
-                    color = android.graphics.Color.GRAY
-                )
-            )
-            return
-        }
-        
-        // Collect sticker in map viewmodel
-        viewModel.collectSticker(zoneId, yawza.zawya.models.StickerZone(
-            id = zoneId,
-            center = com.google.android.gms.maps.model.LatLng(0.0, 0.0),
-            radius = 0.0,
-            brandName = brandName,
-            stickerCount = 1,
-            color = android.graphics.Color.GRAY
-        ))
-        
-        // Mint sticker on blockchain via ProfileViewModel
-        profileViewModel.collectSticker(zoneId, brandName, 1)
-        
-        navigationManager.showCollectionToast(
-            yawza.zawya.models.StickerZone(
-                id = zoneId,
-                center = com.google.android.gms.maps.model.LatLng(0.0, 0.0),
-                radius = 0.0,
-                brandName = brandName,
-                stickerCount = 1,
-                color = android.graphics.Color.GRAY
-            ),
-            1,
-            1
-        )
-    }
-    
+
+
     companion object {
         const val QR_SCAN_REQUEST_CODE = 1001
     }
-    
-    private fun simulateStickerCollection(zone: StickerZone) {
-        // Check if user already has this sticker
-        if (profileViewModel.hasSticker(zone.id)) {
-            navigationManager.showAlreadyCollectedToast(zone)
-            return
-        }
-        
-        // Check if zone has remaining stickers
-        val remainingStickers = viewModel.getRemainingStickers(zone)
-        if (remainingStickers > 0) {
-            // Collect sticker in map viewmodel
-            viewModel.collectSticker(zone.id, zone)
-            
-            // Mint sticker on blockchain via ProfileViewModel
-            profileViewModel.collectSticker(zone.id, zone.brandName, zone.stickerCount)
-            
-            val collected = viewModel.collectedStickers.value?.get(zone.id) ?: 0
-            navigationManager.showCollectionToast(zone, collected, zone.stickerCount)
-        } else {
-            navigationManager.showCompletionToast(zone)
-        }
-    }
-    
+
     private fun navigateToZone(zone: StickerZone) {
         val userLocation = viewModel.userLocation.value
         if (userLocation != null) {

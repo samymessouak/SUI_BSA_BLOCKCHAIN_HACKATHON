@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import yawza.zawya.R
 import yawza.zawya.fragment.CollectionFragment
 import yawza.zawya.fragment.MapFragment
+import yawza.zawya.fragment.ProfileFragment
 
 class NavigationController(
     private val context: Context,
@@ -17,6 +18,7 @@ class NavigationController(
     private var currentFragment: Fragment? = null
     private lateinit var mapFragment: MapFragment
     private lateinit var collectionFragment: CollectionFragment
+    private lateinit var profileFragment: ProfileFragment
     
     fun initialize() {
         setupFragments()
@@ -27,6 +29,7 @@ class NavigationController(
     private fun setupFragments() {
         mapFragment = MapFragment()
         collectionFragment = CollectionFragment()
+        profileFragment = ProfileFragment()
     }
     
     private fun setupBottomNavigation() {
@@ -38,6 +41,10 @@ class NavigationController(
                 }
                 R.id.nav_collection -> {
                     showCollectionFragment()
+                    true
+                }
+                R.id.nav_profile -> {
+                    showProfileFragment()
                     true
                 }
                 else -> false
@@ -60,6 +67,15 @@ class NavigationController(
                 .replace(R.id.fragment_container, collectionFragment)
                 .commit()
             currentFragment = collectionFragment
+        }
+    }
+    
+    private fun showProfileFragment() {
+        if (currentFragment != profileFragment) {
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, profileFragment)
+                .commit()
+            currentFragment = profileFragment
         }
     }
     

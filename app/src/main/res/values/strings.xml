@@ -8,4 +8,7 @@
     <string name="close">Close</string>
     <string name="location_permission_required">Location permission is required to show your position on the map</string>
     <string name="camera_permission_required">Camera permission is required to scan stickers</string>
+    
+    <!-- Firebase Authentication -->
+    <string name="default_web_client_id">405215173465-alfbk57oslnv5bs3uqltlhjj4c7hh2hk.apps.googleusercontent.com</string>
 </resources>
