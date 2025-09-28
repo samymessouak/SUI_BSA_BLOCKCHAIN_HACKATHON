@@ -1,5 +1,7 @@
 package yawza.zawya.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,7 @@ class CollectionFragment : Fragment() {
     private lateinit var binding: FragmentCollectionBinding
     private lateinit var viewModel: CollectionViewModel
     private lateinit var adapter: CollectionAdapter
+    private lateinit var prefs: SharedPreferences
 
     // Create your SuiService instance (replace with real keys/IDs)
     private val suiService by lazy {
@@ -47,9 +50,13 @@ class CollectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize SharedPreferences
+        prefs = requireContext().getSharedPreferences("inventory_state", Context.MODE_PRIVATE)
+
         setupViewModel()
         setupRecyclerView()
         observeViewModel()
+        checkInventoryState()
 
         // 🔹 Handle button click
         binding.btnCreateInventory.setOnClickListener {
@@ -59,7 +66,8 @@ class CollectionFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Refresh collections when fragment becomes visible
+        // Check inventory state and refresh collections when fragment becomes visible
+        checkInventoryState()
         viewModel.refreshCollections()
     }
 
@@ -81,6 +89,21 @@ class CollectionFragment : Fragment() {
                 showStickerDetails(collection)
             }
             binding.recyclerCollections.adapter = adapter
+        }
+    }
+    
+    private fun checkInventoryState() {
+        val hasInventory = prefs.getBoolean("inventory_created", false)
+        if (hasInventory) {
+            // User already has an inventory, show collections
+            binding.recyclerCollections.visibility = View.VISIBLE
+            binding.btnCreateInventory.visibility = View.GONE
+            android.util.Log.d("CollectionFragment", "Inventory already exists, showing collections")
+        } else {
+            // No inventory yet, show button
+            binding.recyclerCollections.visibility = View.GONE
+            binding.btnCreateInventory.visibility = View.VISIBLE
+            android.util.Log.d("CollectionFragment", "No inventory found, showing create button")
         }
     }
 
@@ -149,9 +172,11 @@ class CollectionFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
 
-                // ✅ Show the content under the button and hide the button
+                // ✅ Mark inventory as created and show collections
+                prefs.edit().putBoolean("inventory_created", true).apply()
                 binding.recyclerCollections.visibility = View.VISIBLE
                 binding.btnCreateInventory.visibility = View.GONE
+                android.util.Log.d("CollectionFragment", "Inventory created and state saved")
 
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()

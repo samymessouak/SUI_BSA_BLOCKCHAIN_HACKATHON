@@ -79,9 +79,13 @@ class SimpleAuthActivity : AppCompatActivity() {
     }
     
     private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
+        // Wait a moment for the auth state to propagate
+        lifecycleScope.launch {
+            kotlinx.coroutines.delay(500) // Small delay to ensure auth state is updated
+            val intent = Intent(this@SimpleAuthActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
     }
 }

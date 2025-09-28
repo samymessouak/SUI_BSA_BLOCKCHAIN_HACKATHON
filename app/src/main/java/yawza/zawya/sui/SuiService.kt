@@ -33,6 +33,45 @@ class SuiService(
     // Inventory
     // -----------------------------
 
+    /**
+     * Check if the user already has an inventory on the blockchain
+     */
+    suspend fun hasInventory(): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val address = signer.address.toString()
+            val payload = """
+                {"jsonrpc":"2.0","id":1,"method":"sui_getOwnedObjects",
+                 "params":["$address",{"filter":{"Package":"$packageId"},"options":{"showType":true,"showContent":true}}]}
+            """.trimIndent()
+
+            val req = Request.Builder()
+                .url("https://fullnode.testnet.sui.io:443")
+                .post(payload.toRequestBody(JSON))
+                .build()
+
+            client.newCall(req).execute().use { resp ->
+                if (!resp.isSuccessful) return@withContext false
+                val body = resp.body?.string() ?: return@withContext false
+                val json = JSONObject(body)
+                val result = json.optJSONObject("result")
+                val data = result?.optJSONArray("data") ?: return@withContext false
+                
+                // Check if any object is an Inventory
+                for (i in 0 until data.length()) {
+                    val obj = data.getJSONObject(i)
+                    val objectType = obj.optJSONObject("data")?.optString("type", "") ?: ""
+                    if (objectType.endsWith("::stickers::Inventory")) {
+                        return@withContext true
+                    }
+                }
+                return@withContext false
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("SuiService", "Error checking inventory: ${e.message}")
+            return@withContext false
+        }
+    }
+
     suspend fun createInventory(): String = withContext(Dispatchers.IO) {
         val txb = programmableTx {
             command {
