@@ -39,7 +39,7 @@ All sticker ownership and trades are stored **on-chain**, using the **Sui blockc
 
 ### Backend/Storage
 - **On-chain**: Sticker ownership and trading
-- **Off-chain**: User profiles, promotion metadata (Firebase/Supabase)
+- **Off-chain**: User profiles, promotion metadata (Firebase)
 
 ---
 
