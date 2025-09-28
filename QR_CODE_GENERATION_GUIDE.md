@@ -2,7 +2,7 @@
 
 ## 📱 **QR Code Data Format**
 
-Your app expects QR codes with this JSON structure:
+This application expects QR codes with this JSON structure:
 ```json
 {
   "sticker_id": "mcdo_1",
@@ -205,13 +205,13 @@ Create an HTML file `qr_generator.html`:
 </html>
 ```
 
-## 🎯 **Testing Your QR Codes**
+## 🎯 **Testing QR Codes**
 
 1. **Generate a QR code** using any method above
-2. **Open your app** on the emulator
+2. **Open this application** on the emulator
 3. **Go to Map** → **Navigate to a zone** → **Tap "Scan here"**
 4. **Point camera at QR code** (you can display it on another screen)
-5. **App should detect** the sticker and add it to your collection
+5. **The application should detect** the sticker and add it to your collection
 
 ## 📱 **Physical QR Code Setup**
 
@@ -220,7 +220,7 @@ Create an HTML file `qr_generator.html`:
    - McDonald's zones: `mcdo_1`, `mcdo_2`
    - Nike zones: `nike_1`, `nike_2`, `nike_3`
    - Sephora zones: `sephora_1`, `sephora_2`, `sephora_3`, `sephora_4`
-3. **Test scanning** with your app
+3. **Test scanning** with this application
 
 ## 🔧 **Troubleshooting**
 
