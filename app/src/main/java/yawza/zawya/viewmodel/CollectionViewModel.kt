@@ -52,8 +52,14 @@ class CollectionViewModel : ViewModel() {
     }
     
     private fun observeProfileChanges() {
-        // Use a direct approach - update collections whenever we need to
-        // This will be called from the Fragment when needed
+        // Observe ProfileViewModel changes
+        profileViewModel.ownedStickers.observeForever { _ ->
+            updateCollectionsFromProfile()
+        }
+    }
+    
+    fun refreshCollections() {
+        updateCollectionsFromProfile()
     }
     
     private fun updateCollectionsFromProfile() {
@@ -113,9 +119,5 @@ class CollectionViewModel : ViewModel() {
         } else {
             0
         }
-    }
-    
-    fun refreshCollections() {
-        updateCollectionsFromProfile()
     }
 }
