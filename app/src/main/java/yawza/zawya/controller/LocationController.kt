@@ -3,6 +3,7 @@ package yawza.zawya.controller
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.model.LatLng
 import yawza.zawya.manager.LocationManager
@@ -75,14 +76,17 @@ class LocationController(
             val providers = locationManager.getProviders(true)
             
             for (provider in providers) {
-                val location = locationManager.getLastKnownLocation(provider)
-                if (location != null) {
-                    val latLng = LatLng(location.latitude, location.longitude)
-                    android.util.Log.d("LocationController", "Emulator location found: ${latLng.latitude}, ${latLng.longitude}")
-                    viewModel.updateUserLocation(latLng)
-                    mapManager.updateUserLocationMarker(latLng)
-                    mapManager.updateZoneOverlays(lausanneZones, latLng)
-                    return
+                // Check if we have location permission before calling getLastKnownLocation
+                if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    val location = locationManager.getLastKnownLocation(provider)
+                    if (location != null) {
+                        val latLng = LatLng(location.latitude, location.longitude)
+                        android.util.Log.d("LocationController", "Emulator location found: ${latLng.latitude}, ${latLng.longitude}")
+                        viewModel.updateUserLocation(latLng)
+                        mapManager.updateUserLocationMarker(latLng)
+                        mapManager.updateZoneOverlays(lausanneZones, latLng)
+                        return
+                    }
                 }
             }
         } catch (e: Exception) {

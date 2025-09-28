@@ -1,37 +1,58 @@
 package yawza.zawya.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseUser
+import yawza.zawya.manager.AuthManager
 import yawza.zawya.models.StickerToken
 import yawza.zawya.service.BlockchainService
 
 class ProfileViewModel : ViewModel() {
-    
+
     companion object {
         @Volatile
         private var INSTANCE: ProfileViewModel? = null
-        
+
         fun getInstance(): ProfileViewModel {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: ProfileViewModel().also { INSTANCE = it }
             }
         }
     }
-    
+
     private val blockchainService = BlockchainService()
-    
+    private var authManager: AuthManager? = null
+
     private val _ownedStickers = MutableLiveData<List<StickerToken>>()
     val ownedStickers: LiveData<List<StickerToken>> = _ownedStickers
-    
+
     private val _walletAddress = MutableLiveData<String>()
     val walletAddress: LiveData<String> = _walletAddress
-    
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-    
+
+    private val _userProfile = MutableLiveData<FirebaseUser?>()
+    val userProfile: LiveData<FirebaseUser?> = _userProfile
+
     init {
         loadUserProfile()
+    }
+
+    fun initializeAuthManager(context: Context) {
+        authManager = AuthManager(context)
+        // Observe auth state changes
+        authManager?.authState?.let { authState ->
+            // Update user profile when auth state changes
+            // This would need to be done in a coroutine scope in a real implementation
+        }
+    }
+
+    fun signOut() {
+        authManager?.signOut()
+        _userProfile.value = null
     }
     
     private fun loadUserProfile() {

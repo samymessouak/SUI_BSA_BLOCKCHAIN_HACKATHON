@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+        profileViewModel = ProfileViewModel.getInstance()
         profileViewModel.initializeAuthManager(requireContext())
         
         setupUI()
