@@ -225,15 +225,23 @@ After scanning a QR code, you can verify that the blockchain has been updated:
 The app workflow is demonstrated through these key screens:
 
 ### **Map Screen** 🗺️
+<img width="1080" height="2400" alt="Screenshot_20250928_095702" src="https://github.com/user-attachments/assets/4f33c2f5-41ae-4f98-9b87-99b85e508ea4" />
+
 *Interactive map of Lausanne showing colored zones and the purple hexagonal scan button*
 
 ### **Collection Screen** 📚
+<img width="1080" height="2400" alt="Screenshot_20250928_101858" src="https://github.com/user-attachments/assets/8cacd5da-03d6-4f33-b327-6b0a4a98eb07" />
+
 *"My Sticker Collection" showing brand progress (McDonald's 1/2, Nike 1/3, Sephora 0/4)*
 
 ### **Collection Detail Modal** 🔍
+<img width="1080" height="2400" alt="Screenshot_20250928_101744" src="https://github.com/user-attachments/assets/20266b3f-3488-4a5d-801e-e4356a856007" />
+
 *McDonald's Collection modal showing individual stickers with lock/unlock status*
 
 ### **Transaction Screen** 💱
+<img width="1080" height="2400" alt="Screenshot_20250928_095903" src="https://github.com/user-attachments/assets/7c9b63d3-3518-4f60-84d2-b461bcb0bd40" />
+
 *Sticker transfer interface with friend's wallet ID input and 3x3 sticker grid*
 
 ---
