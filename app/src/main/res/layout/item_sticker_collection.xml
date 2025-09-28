@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:padding="8dp">
+
+        <!-- Sticker Icon -->
+        <TextView
+            android:id="@+id/text_sticker_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="🏷️"
+            android:textSize="24sp" />
+
+        <!-- Lock Icon (for unowned stickers) -->
+        <ImageView
+            android:id="@+id/image_lock"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_lock"
+            android:visibility="gone" />
+
+        <!-- Sticker Name -->
+        <TextView
+            android:id="@+id/text_sticker_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="Sticker Name"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
