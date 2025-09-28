@@ -1,0 +1,77 @@
+# Zawya – Move Module (`stickers::stickers`)
+
+This README documents the **Move smart contract functions** for managing stickers, inventories, rewards, and exchanges on the **Sui blockchain**.  
+
+---
+
+## 📦 Data Structures
+
+- **`Sticker`**: Represents a collectible item (sponsor, collection, sticker ID).  
+- **`Reward`**: A prize or badge linked to a sponsor/collection.  
+- **`Registry`**: Global shared object holding sponsors and their collection size limits.  
+- **`Inventory`**: A user-owned container of stickers.  
+
+---
+
+## ⚙️ Functions
+
+### 🔹 Registry Lifecycle
+- **`init_registry(ctx)`**  
+  Creates and shares a new empty `Registry`.
+
+- **`append_sponsor(reg, name)`**  
+  Adds a new sponsor to the registry.
+
+- **`remove_sponsor(reg, name): bool`**  
+  Removes a sponsor if present. Returns `true` if removed.
+
+- **`append_max(reg, v)`**  
+  Adds a maximum number of stickers allowed for the last added sponsor.
+
+- **`remove_max_at(reg, idx): bool`**  
+  Removes a maximum by index. Returns `false` if out of bounds.
+
+- **`sponsors(reg)` / `max_list(reg)`**  
+  Read-only getters for sponsors and their max sticker limits.
+
+---
+
+### 🔹 Inventory Management
+- **`new_inventory(ctx)`**  
+  Creates a new empty `Inventory` and transfers it to the caller.
+
+- **`get(inv)`**  
+  Returns all stickers in the inventory (read-only).
+
+- **`inventory_append(inv, s, ctx)`**  
+  Adds a sticker to your own inventory. Checks that caller is the owner.
+
+- **`inventory_remove(inv, sid, ctx)`**  
+  Removes a sticker by ID and transfers it back to the caller. Checks ownership.
+
+- **`append(inv, s)`**  
+  Helper: adds a sticker to an inventory without ownership checks.
+
+- **`remove(inv, sid): Sticker`**  
+  Helper: removes a sticker by ID without ownership checks. Aborts if not found.
+
+---
+
+### 🔹 Minting & Rewards
+- **`mint_sticker(reg, inv, sponsor, collection_id, sticker_id, ctx)`**  
+  - Checks inventory ownership.  
+  - Verifies sponsor exists and `sticker_id` is valid (`≤ max_stickers[i]`).  
+  - Creates a new `Sticker` and appends it to the inventory.
+
+- **`mint_reward(sponsor, collection_id, description, ctx)`**  
+  Creates a new `Reward` and transfers it to the caller.
+
+---
+
+### 🔹 Exchange (Trading)
+- **`exchange(inv1, inv2, s1_id, s2_id, ctx)`**  
+  - Removes `s1_id` from `inv1` and `s2_id` from `inv2`.  
+  - Ensures both stickers belong to **different collections**.  
+  - Atomically swaps them between the two inventories.  
+
+---
