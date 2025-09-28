@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.maps.model.LatLng
 import yawza.zawya.controller.LocationController
 import yawza.zawya.controller.MapController
 import yawza.zawya.controller.MapUIController
@@ -83,10 +84,52 @@ class MapFragment : Fragment() {
                 mapManager.updateUserLocationMarker(it)
                 mapManager.updateZoneOverlays(zoneRepository.getLausanneZones(), it)
                 updateLegend()
+                updatePersistentScanButton(it)
             }
         }
         
         // Removed progress tracking from map screen
+    }
+    
+    private fun updatePersistentScanButton(userLocation: LatLng) {
+        val zones = zoneRepository.getLausanneZones()
+        var nearestDistance: Float? = null
+        var nearestZoneBrand: String? = null
+        
+        // Find the nearest zone
+        zones.forEach { zone ->
+            val distance = locationManager.calculateDistance(userLocation, zone.center)
+            if (nearestDistance == null || distance < nearestDistance!!) {
+                nearestDistance = distance
+                nearestZoneBrand = zone.brandName
+            }
+        }
+        
+        // Update the persistent scan button
+        uiController.updatePersistentScanButton(nearestDistance, nearestZoneBrand)
+    }
+    
+    private fun handlePersistentScanClick() {
+        val userLocation = viewModel.userLocation.value
+        if (userLocation != null) {
+            val zones = zoneRepository.getLausanneZones()
+            val nearestZone = zones.minByOrNull { zone ->
+                locationManager.calculateDistance(userLocation, zone.center)
+            }
+            
+            nearestZone?.let { zone ->
+                val distance = locationManager.calculateDistance(userLocation, zone.center)
+                if (distance <= 20) {
+                    // User is close enough to scan
+                    zoneController.handleStickerScan(zone)
+                } else {
+                    // User is too far, show distance toast
+                    navigationManager.showDistanceToast(distance.toInt())
+                }
+            }
+        } else {
+            navigationManager.showLocationUnavailableToast()
+        }
     }
     
     private fun setupUI() {
@@ -108,6 +151,11 @@ class MapFragment : Fragment() {
             onRotateLeftClick = { mapController.handleRotateLeft() },
             onRotateRightClick = { mapController.handleRotateRight() }
         )
+        
+        // Persistent scan button
+        uiController.setupPersistentScanButton {
+            handlePersistentScanClick()
+        }
     }
     
     private fun setupMap() {
