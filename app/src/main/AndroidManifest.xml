@@ -38,6 +38,11 @@
         </activity>
         
         <activity
+            android:name=".activity.SimpleAuthActivity"
+            android:exported="false"
+            android:theme="@style/Theme.StickerHunt" />
+        
+        <activity
             android:name=".activity.QRScannerActivity"
             android:exported="false"
             android:screenOrientation="portrait"

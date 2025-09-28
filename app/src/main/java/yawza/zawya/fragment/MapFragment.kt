@@ -58,7 +58,8 @@ class MapFragment : Fragment() {
     private fun initializeComponents() {
         // Initialize ViewModels
         viewModel = ViewModelProvider(this)[MapViewModel::class.java]
-        profileViewModel = ProfileViewModel.getInstance()
+        profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+        profileViewModel.initializeAuthManager(requireContext())
         
         // Initialize managers
         mapManager = MapManager(requireContext())
