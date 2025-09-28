@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Template for teammates -->
-    <!-- Copy this file to api_keys.xml and add your own API key -->
-    <string name="google_maps_api_key">YOUR_GOOGLE_MAPS_API_KEY_HERE</string>
-</resources>
