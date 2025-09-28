@@ -15,6 +15,7 @@ import yawza.zawya.models.StickerZone
 class ZoneInfoDialog(
     private val context: Context,
     private val zone: StickerZone,
+    private val userDistance: Float? = null,
     private val onActionClick: (String) -> Unit
 ) : Dialog(context) {
 
@@ -50,10 +51,16 @@ class ZoneInfoDialog(
         stickerCountText.text = "${zone.stickerCount} stickers available"
         descriptionText.text = zone.description.ifEmpty { "Tap to scan for stickers in this area!" }
         
+        // Check if user is close enough to scan (within 20 meters)
+        val isCloseEnough = userDistance != null && userDistance <= 20.0f
+        val isVeryClose = userDistance != null && userDistance <= 10.0f
+        
         // Set button click listeners
         scanButton.setOnClickListener {
-            onActionClick("scan")
-            dismiss()
+            if (isCloseEnough) {
+                onActionClick("scan")
+                dismiss()
+            }
         }
         
         navigateButton.setOnClickListener {
@@ -65,8 +72,32 @@ class ZoneInfoDialog(
             dismiss()
         }
         
-        // Style the scan button based on zone color
-        scanButton.setBackgroundColor(zone.color)
-        scanButton.setTextColor(Color.WHITE)
+        // Update scan button state based on distance
+        if (isCloseEnough) {
+            // User is close enough to scan
+            scanButton.isEnabled = true
+            scanButton.alpha = 1.0f
+            scanButton.setBackgroundColor(zone.color)
+            scanButton.setTextColor(Color.WHITE)
+            
+            if (isVeryClose) {
+                scanButton.text = "📱 SCAN NOW!"
+                scanButton.setBackgroundColor(Color.GREEN)
+            } else {
+                scanButton.text = "📱 Scan Here"
+            }
+        } else {
+            // User is too far to scan
+            scanButton.isEnabled = false
+            scanButton.alpha = 0.5f
+            scanButton.setBackgroundColor(Color.GRAY)
+            scanButton.setTextColor(Color.DKGRAY)
+            
+            if (userDistance != null) {
+                scanButton.text = "📱 Too far (${userDistance.toInt()}m away)"
+            } else {
+                scanButton.text = "📱 Get closer to scan"
+            }
+        }
     }
 }
