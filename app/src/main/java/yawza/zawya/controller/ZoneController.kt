@@ -31,7 +31,13 @@ class ZoneController(
     }
     
     fun showZoneInfoDialog(zone: StickerZone) {
-        val dialog = ZoneInfoDialog(context, zone) { action ->
+        // Calculate distance from user to zone
+        val userLocation = viewModel.userLocation.value
+        val distance = userLocation?.let { userLoc ->
+            locationManager.calculateDistance(userLoc, zone.center)
+        }
+        
+        val dialog = ZoneInfoDialog(context, zone, distance) { action ->
             when (action) {
                 "scan" -> handleStickerScan(zone)
                 "navigate" -> navigateToZone(zone)
@@ -40,15 +46,16 @@ class ZoneController(
         dialog.show()
     }
     
-    private fun handleStickerScan(zone: StickerZone) {
+    fun handleStickerScan(zone: StickerZone) {
         val userLocation = viewModel.userLocation.value
         if (userLocation != null) {
             val distance = locationManager.calculateDistance(userLocation, zone.center)
             
-            if (distance <= 50) {
-                // Start QR code scanning
+            if (distance <= 20) {
+                // User is close enough to scan (within 20 meters)
                 startQRCodeScanning(zone)
             } else {
+                // User is too far away
                 navigationManager.showDistanceToast(distance.toInt())
             }
         } else {
@@ -79,8 +86,11 @@ class ZoneController(
     }
     
     private fun processScannedSticker(stickerId: String, zoneId: String, brandName: String) {
+        android.util.Log.d("ZoneController", "Processing scanned sticker: $stickerId, zone: $zoneId, brand: $brandName")
+        
         // Check if user already has this sticker
         if (profileViewModel.hasSticker(stickerId)) {
+            android.util.Log.d("ZoneController", "User already has sticker: $stickerId")
             navigationManager.showAlreadyCollectedToast(
                 yawza.zawya.models.StickerZone(
                     id = zoneId,
@@ -94,6 +104,8 @@ class ZoneController(
             return
         }
         
+        android.util.Log.d("ZoneController", "Adding new sticker to collection: $stickerId")
+        
         // Collect sticker in map viewmodel
         viewModel.collectSticker(zoneId, yawza.zawya.models.StickerZone(
             id = zoneId,
@@ -104,8 +116,10 @@ class ZoneController(
             color = android.graphics.Color.GRAY
         ))
         
-        // Mint sticker on blockchain via ProfileViewModel
-        profileViewModel.collectSticker(zoneId, brandName, 1)
+        // Mint sticker on blockchain via ProfileViewModel (use stickerId, not zoneId)
+        profileViewModel.collectSticker(stickerId, brandName, 1)
+        
+        android.util.Log.d("ZoneController", "Sticker successfully added to collection")
         
         navigationManager.showCollectionToast(
             yawza.zawya.models.StickerZone(

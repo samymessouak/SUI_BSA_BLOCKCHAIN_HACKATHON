@@ -43,4 +43,30 @@ class MapUIController(
         // Show only total stickers available, not collected count
         binding.textLegendContent.text = "🍔 McDonald's (2 stickers)\n👟 Nike (3 stickers)\n💄 Sephora (4 stickers)"
     }
+    
+    fun setupPersistentScanButton(onScanClick: () -> Unit) {
+        binding.btnScanPersistent.setOnClickListener { onScanClick() }
+    }
+    
+    fun updatePersistentScanButton(distance: Float?, nearestZoneBrand: String?) {
+        val isCloseEnough = distance != null && distance <= 20.0f
+        val isVeryClose = distance != null && distance <= 10.0f
+        
+        if (isCloseEnough) {
+            // User is close enough to scan - full opacity
+            binding.btnScanPersistent.isEnabled = true
+            binding.btnScanPersistent.alpha = 1.0f
+            
+            if (isVeryClose) {
+                binding.btnScanPersistent.text = "📱\nNOW!"
+            } else {
+                binding.btnScanPersistent.text = "📱\nSCAN"
+            }
+        } else {
+            // User is too far to scan - reduced opacity (hollow effect)
+            binding.btnScanPersistent.isEnabled = false
+            binding.btnScanPersistent.alpha = 0.3f
+            binding.btnScanPersistent.text = "📱\nSCAN"
+        }
+    }
 }
